@@ -57,6 +57,7 @@ services:
     container_name: mysql
     image: biarms/mysql:5.7
     environment:
+    - "MYSQL_DATABASE=university-dev"
     - "MYSQL_USER=ROOT"
     - "MYSQL_ROOT_PASSWORD=password"
     - "MYSQL_ALLOW_EMPTY_PASSWORD=false"

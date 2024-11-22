@@ -62,6 +62,20 @@ $ cp .env.example .env
 $ docker compose up --build
 ```
 
-6. Happy Coding!!!
+6. Connect to MySQL db with your local client, MySQL workbench, Sequelace, etc. Then, insert credentials based on `docker-compose.yml` under mysql service
+
+7. Create databse give it name as `university-dev`
+
+8. Run migration from container `user-service`
+```bash
+$ docker compose exec user-service php artisan migrate
+```
+
+9. Then, you can use my simple default seeder from `user-service`
+```bash
+$ docker compose exec user-service php artisan db:seed
+```
+
+10. Happy Coding!!!
 
 ### Last but no least you can get my sample postman collection [here!](InoSoft.postman_collection.json)
