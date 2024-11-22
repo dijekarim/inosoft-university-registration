@@ -1,0 +1,88 @@
+services:
+  user-service:
+    build:
+      platforms:
+        - "linux/amd64"
+      context: ./inosoft-user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    volumes:
+      - ./inosoft-user-service:/app
+    ports:
+      - "8080:80"
+    env_file:
+      - ./inosoft-user-service/.env
+    depends_on:
+      - mysql
+      - rabbitmq
+    restart: always
+  
+  notification-service:
+    build:
+      platforms:
+        - "linux/amd64"
+      context: ./inosoft-notification-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    volumes:
+      - ./inosoft-notification-service:/app
+    ports:
+      - "8081:80"
+    env_file:
+      - ./inosoft-notification-service/.env
+    depends_on:
+      - mysql
+      - rabbitmq
+    restart: always
+  
+  department-service:
+    build:
+      platforms:
+        - "linux/amd64"
+      context: ./inosoft-department-service
+      dockerfile: Dockerfile
+    container_name: department-service
+    volumes:
+      - ./inosoft-department-service:/app
+    ports:
+      - "8082:80"
+    env_file:
+      - ./inosoft-department-service/.env
+    depends_on:
+      - mysql
+      - rabbitmq
+    restart: always
+
+  mysql:
+    container_name: mysql
+    image: biarms/mysql:5.7
+    environment:
+    - "MYSQL_USER=ROOT"
+    - "MYSQL_ROOT_PASSWORD=password"
+    - "MYSQL_ALLOW_EMPTY_PASSWORD=false"
+    ports:
+    - "3306:3306"
+    - "33060:33060"
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672' # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    restart: always
+    ports:
+    - 6379:6379
+
+volumes:
+  dbdata:
