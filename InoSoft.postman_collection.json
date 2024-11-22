@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "def9a273-fd98-4155-bb13-0a3874755bb6",
+		"name": "InoSoft",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3406609"
+	},
+	"item": [
+		{
+			"name": "Notification Service",
+			"item": [
+				{
+					"name": "Send Notif",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get('notif-serv-uri')}/sanctum/csrf-cookie`,",
+									"    method: 'GET'",
+									"}, function(error, response, { cookies }) {",
+									"    if (!error) pm.collectionVariables.set('xsrf-token', cookies.get('XSRF-TOKEN'))",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{xsrf-token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 1,\n    \"name\": \"Tester\",\n    \"course\": \"Mathematics\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{notif-serv-uri}}/api/send-notification",
+							"host": [
+								"{{notif-serv-uri}}"
+							],
+							"path": [
+								"api",
+								"send-notification"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Department Service",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get('dept-serv-uri')}/sanctum/csrf-cookie`,",
+									"    method: 'GET'",
+									"}, function(error, response, { cookies }) {",
+									"    if (!error) pm.collectionVariables.set('xsrf-token', cookies.get('XSRF-TOKEN'))",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{xsrf-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dept-serv-uri}}/api/register",
+							"host": [
+								"{{dept-serv-uri}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Department",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dept-serv-uri}}/api/departments",
+							"host": [
+								"{{dept-serv-uri}}"
+							],
+							"path": [
+								"api",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Service",
+			"item": [
+				{
+					"name": "User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get('user-serv-uri')}/sanctum/csrf-cookie`,",
+									"    method: 'GET'",
+									"}, function(error, response, { cookies }) {",
+									"    if (!error) pm.collectionVariables.set('xsrf-token', cookies.get('XSRF-TOKEN'))",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{xsrf-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "127.0.0.1:8000",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base-uri}}/api/user",
+							"host": [
+								"{{base-uri}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get('user-serv-uri')}/sanctum/csrf-cookie`,",
+									"    method: 'GET'",
+									"}, function(error, response, { cookies }) {",
+									"    if (!error) pm.collectionVariables.set('xsrf-token', cookies.get('XSRF-TOKEN'))",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"response = JSON.parse(responseBody)",
+									"pm.collectionVariables.set('auth-token', response.access_token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{xsrf-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Referer",
+								"value": "127.0.0.1:8000",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"student1@example.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user-serv-uri}}/api/login",
+							"host": [
+								"{{user-serv-uri}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "xsrf-token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user-serv-uri",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "notif-serv-uri",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "dept-serv-uri",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "auth-token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXBpL2xvZ2luIiwiaWF0IjoxNzMyMDg5Nzc5LCJleHAiOjE3MzIwOTMzNzksIm5iZiI6MTczMjA4OTc3OSwianRpIjoiVzdxTnozWGlCZURGekVvRyIsInN1YiI6IjEiLCJwcnYiOiI1MDFhMDdjODJjMGQ5ZjJhZmM0YTYwOWRiNGE2ZjVkMmRjYzZhZWI2In0.mlSdXeKXNcQJzfacHpm_YqL147DBtkSxs1UhSXpyFw0",
+			"type": "string"
+		}
+	]
+}

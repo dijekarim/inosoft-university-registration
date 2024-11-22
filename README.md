@@ -63,3 +63,5 @@ $ docker compose up --build
 ```
 
 6. Happy Coding!!!
+
+### Last but no least you can get my sample postman collection [here!](InoSoft.postman_collection.json)
